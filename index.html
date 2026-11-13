@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Study Sprint</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{--bg:#17171a;--card:#0c0c0e;--tx:#f4f4f5;--mu:#a1a1ab;--bd:#2a2a31;--in:#16161a;--a:#8b5cf6;--b:#06b6d4;--hl:rgba(255,255,255,.07);--ln:rgba(255,255,255,.22);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=light]{--bg:#eceff6;--card:#fff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--in:#f1f5f9;--a:#6366f1;--b:#ec4899;--hl:rgba(255,255,255,.9);--ln:rgba(15,23,42,.14);color-scheme:light}
+:root[data-theme=forest]{--bg:#12261f;--card:#0a1713;--tx:#e4f3ec;--mu:#8fb5a6;--bd:#24493f;--in:#0f2923;--a:#34d399;--b:#a3e635;--ln:rgba(163,230,53,.28)}
+:root[data-theme=sunset]{--bg:#ffe9d6;--card:#fffaf5;--tx:#3b1d2a;--mu:#9a6b6b;--bd:#f6d5c0;--in:#ffeadb;--a:#f97316;--b:#e11d48;--hl:rgba(255,255,255,.9);--ln:rgba(225,29,72,.2);color-scheme:light}
+html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:radial-gradient(900px 460px at 50% -120px,var(--hl),transparent 70%),var(--bg);color:var(--tx);font-family:ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;transition:background .3s}
+body::before{content:'';position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.card{background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(150deg,var(--ln),transparent 45%,var(--ln)) border-box;border:1px solid transparent;border-radius:1.5rem;box-shadow:inset 0 1px 0 var(--hl),0 28px 50px -30px rgba(0,0,0,.9)}
+.btn{position:relative;padding:.6rem 1.05rem;border-radius:.95rem;font-weight:700;font-size:.85rem;color:var(--tx);cursor:pointer;background:linear-gradient(180deg,var(--hl),transparent),var(--in);border:1px solid var(--bd);box-shadow:inset 0 1px 0 var(--hl),0 3px 10px rgba(0,0,0,.25);transition:transform .15s,filter .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.12)}
+.btn:active{transform:scale(.97)}
+.bp{background:linear-gradient(180deg,rgba(255,255,255,.22),transparent 55%),linear-gradient(135deg,var(--a),var(--b));color:#fff;border-color:rgba(255,255,255,.2);text-shadow:0 1px 2px rgba(0,0,0,.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 12px 26px -10px var(--a)}
+.inp{width:100%;background:var(--in);border:1px solid var(--bd);border-radius:.95rem;padding:.65rem .85rem;color:var(--tx);font-size:.92rem;transition:border-color .2s,box-shadow .2s}
+.inp::placeholder{color:var(--mu);opacity:.7}
+.inp:focus{outline:none;border-color:var(--a);box-shadow:0 0 0 3px color-mix(in srgb,var(--a) 25%,transparent)}
+.btn:focus-visible,.tab:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+.chip{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .85rem;border-radius:9999px;background:linear-gradient(180deg,var(--hl),transparent),var(--in);border:1px solid var(--bd);font-size:.85rem;font-weight:700}
+.c2{font-size:.68rem;font-weight:700;padding:.12rem .55rem;border-radius:9999px}
+.gt{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mu{color:var(--mu)}
+.h{font-weight:800;font-size:1.08rem;margin-bottom:1.1rem;display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;letter-spacing:-.01em}
+.ic{display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:.8rem;font-style:normal;font-size:1.05rem;background:linear-gradient(135deg,color-mix(in srgb,var(--a) 30%,transparent),color-mix(in srgb,var(--b) 30%,transparent));border:1px solid color-mix(in srgb,var(--a) 45%,transparent)}
+.bar{height:.6rem;border-radius:9999px;background:var(--in);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}
+.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--a),var(--b));transition:width .4s}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;gap:.35rem;overflow-x:auto;padding:.4rem;margin-bottom:1.25rem;border-radius:1.2rem;background:color-mix(in srgb,var(--card) 85%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--bd);scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:.6rem 1rem;border-radius:.9rem;font-size:.85rem;font-weight:700;color:var(--mu);white-space:nowrap;cursor:pointer;transition:color .2s}
+.tab:hover{color:var(--tx)}
+.tab.on{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.2),transparent 55%),linear-gradient(135deg,var(--a),var(--b));box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 20px -8px var(--a)}
+.view{display:none}.view.on{display:block}
+@keyframes vin{from{opacity:0;transform:translateY(8px)}}
+@media(prefers-reduced-motion:no-preference){.view.on{animation:vin .28s ease}}
+.logo{filter:drop-shadow(0 0 14px rgba(139,92,246,.6))}
+#ring{filter:drop-shadow(0 0 7px var(--a))}
+#tm{background:linear-gradient(180deg,var(--tx),var(--mu));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.03em}
+.ti{background:var(--in);border:1px solid var(--bd);border-radius:1rem;transition:transform .15s,border-color .2s}
+.ti:hover{transform:translateX(2px);border-color:var(--a)}
+input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:none;width:1.4rem;height:1.4rem;border-radius:50%;border:2px solid var(--mu);display:grid;place-content:center;cursor:pointer;transition:.2s}
+input[type=checkbox]:checked{background:linear-gradient(135deg,var(--a),var(--b));border-color:transparent}
+input[type=checkbox]:checked::after{content:'✓';color:#fff;font-size:.8rem;font-weight:800}
+input[type=range]{accent-color:var(--a)}
+.flip{perspective:1000px}
+.fi{transition:transform .55s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}.fi.on{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:1.4rem;border-radius:1.25rem;font-weight:700;font-size:1.15rem;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:auto}
+.ff{background:radial-gradient(circle at 15% 0,rgba(255,255,255,.3),transparent 55%),linear-gradient(135deg,var(--a),var(--b));color:#fff;box-shadow:0 22px 40px -22px var(--a)}
+.fb{background:var(--in);border:1px solid var(--bd);transform:rotateY(180deg)}
+.sw{padding:.75rem;text-align:left;border-radius:1rem;font-weight:700;font-size:.85rem;background:var(--in);border:1px solid var(--bd);color:var(--tx);cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s}
+.sw:hover{transform:translateY(-1px)}
+.sw.on{border-color:var(--a);box-shadow:0 0 0 1px var(--a),0 12px 28px -14px var(--a)}
+@media(prefers-reduced-motion:reduce){.fi,.bar i,.btn,.ti{transition:none}}
+</style>
+</head>
+<body>
+<div class="max-w-3xl mx-auto px-4 py-4">
+
+<header class="card p-4 mb-4 flex flex-wrap items-center justify-between gap-3">
+  <div class="flex items-center gap-3">
+    <svg viewBox="0 0 40 40" class="w-12 h-12 shrink-0 logo" aria-label="Study Sprint logo"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#818cf8"/><stop offset="1" stop-color="#f472b6"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="#0f172a" stroke="rgba(255,255,255,.18)"/><text x="20" y="30" text-anchor="middle" font-size="29" font-weight="900" font-style="italic" fill="url(#lg)" font-family="system-ui,sans-serif">S</text></svg>
+    <div>
+      <h1 class="text-2xl font-extrabold leading-tight gt">Study Sprint</h1>
+      <p class="text-xs mu">Master more in less time with Study Sprint</p>
+    </div>
+  </div>
+  <div class="flex flex-wrap items-center gap-2">
+    <label class="chip relative cursor-pointer" title="Tap to set your exam date">📅 <span id="exTxt">Set exam date</span><input id="exIn" type="date" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onclick="try{this.showPicker()}catch(e){}" onchange="setExam(this.value)" aria-label="Next exam date"></label>
+    <div class="chip">🔥 <b id="stk">0</b><span class="text-xs mu">day streak</span><span class="c2" style="background:linear-gradient(135deg,#fde68a,#f59e0b);color:#2a1700">🎓 Scholar</span></div>
+    <button id="thBtn" class="btn" onclick="toggleTheme()" aria-label="Toggle light or dark theme">☀️</button>
+  </div>
+</header>
+
+<nav id="nav" class="nav" aria-label="Sections"></nav>
+
+<main>
+
+<section class="card p-6 text-center view" data-v="timer">
+  <h2 class="h"><i class="ic">⏱️</i>Pomodoro Focus Timer</h2>
+  <div class="flex gap-2 justify-center flex-wrap mb-5"><button id="mf" class="btn bp" onclick="setMode('f')">Focus (25 min)</button><button id="mb" class="btn" onclick="setMode('b')">Short Break (5 min)</button></div>
+  <div class="relative w-60 h-60 mx-auto mb-5">
+    <svg viewBox="0 0 200 200" class="w-full h-full -rotate-90"><defs><linearGradient id="g2"><stop offset="0" style="stop-color:var(--a)"/><stop offset="1" style="stop-color:var(--b)"/></linearGradient></defs><circle cx="100" cy="100" r="78" fill="var(--in)"/><circle cx="100" cy="100" r="90" fill="none" stroke="var(--bd)" stroke-width="9"/><circle id="ring" cx="100" cy="100" r="90" fill="none" stroke="url(#g2)" stroke-width="9" stroke-linecap="round" stroke-dasharray="565.5" stroke-dashoffset="0" style="transition:stroke-dashoffset .3s linear"/></svg>
+    <div class="absolute inset-0 flex flex-col items-center justify-center"><div id="tm" class="text-6xl font-extrabold tabular-nums">25:00</div><div id="tl" class="text-xs mu mt-1">Stay focused</div></div>
+  </div>
+  <div class="flex gap-2 justify-center mb-5"><button class="btn bp !px-8" onclick="startT()">▶ Start</button><button class="btn" onclick="pauseT()">Pause</button><button class="btn" onclick="resetT()">Reset</button></div>
+  <label class="text-xs mu flex items-center justify-center gap-2">Log focus minutes to <select id="tmS" class="inp !w-auto !py-1.5"></select></label>
+</section>
+
+<section class="card p-6 view" data-v="tasks">
+  <h2 class="h"><i class="ic">✅</i>Smart To-Do &amp; Priority Matrix</h2>
+  <div class="mb-5"><div class="flex justify-between text-xs mb-1.5"><span class="mu">Today’s progress</span><b id="pgTx">0/0 done</b></div><div class="bar"><i id="pgBar" style="width:0"></i></div></div>
+  <div class="grid grid-cols-2 gap-2 mb-3">
+    <input id="tIn" class="inp col-span-2" placeholder="What do you need to study?" maxlength="120" onkeydown="if(event.key==='Enter')addTask()">
+    <select id="tS" class="inp" aria-label="Subject"></select>
+    <select id="tP" class="inp" aria-label="Priority"><option>High</option><option selected>Medium</option><option>Low</option></select>
+    <button class="btn bp col-span-2" onclick="addTask()">Add task</button>
+  </div>
+  <div class="grid grid-cols-2 gap-2 mb-4"><select id="fS" class="inp" onchange="renderTasks()" aria-label="Filter subject"></select><select id="fP" class="inp" onchange="renderTasks()" aria-label="Filter priority"></select></div>
+  <ul id="tList" class="space-y-2"></ul>
+</section>
+
+<section class="card p-6 view" data-v="cards">
+  <h2 class="h"><i class="ic">🧠</i>Micro-Learning Flashcards</h2>
+  <div class="flip h-52 cursor-pointer mb-4" onclick="flipCard()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard()}" aria-label="Flip card"><div id="fc" class="fi relative w-full h-full"><div id="fF" class="face ff"></div><div id="fB" class="face fb"></div></div></div>
+  <div class="flex items-center justify-between gap-2 mb-5"><button class="btn" onclick="navCard(-1)">← Prev</button><span id="cnt" class="text-sm font-bold"></span><button class="btn" onclick="navCard(1)">Next →</button></div>
+  <div class="grid gap-2">
+    <input id="cQ" class="inp" placeholder="Front: question or term" maxlength="120">
+    <input id="cA" class="inp" placeholder="Back: answer" maxlength="240" onkeydown="if(event.key==='Enter')addCard()">
+    <div class="flex gap-2"><button class="btn bp flex-1" onclick="addCard()">Add flashcard</button><button id="delC" class="btn" onclick="delCard()" aria-label="Delete this card">🗑</button></div>
+    <p id="cap" class="text-xs mu"></p>
+  </div>
+</section>
+
+<section class="card p-6 view" data-v="notes">
+  <h2 class="h"><i class="ic">📝</i>Brain Dump Scratchpad <span id="sv" class="text-xs mu font-normal"></span></h2>
+  <textarea id="bd" class="inp" style="min-height:20rem;resize:vertical" placeholder="Formulas, reminders, random thoughts… it saves as you type."></textarea>
+</section>
+
+<section class="card p-6 view" data-v="sounds">
+  <h2 class="h"><i class="ic">🎧</i>Ambient Focus Soundscapes</h2>
+  <div class="grid grid-cols-3 gap-2">
+    <button class="btn snd" data-k="rain" onclick="playSound('rain')">🌧️ Rain</button>
+    <button class="btn snd" data-k="white" onclick="playSound('white')">📻 White Noise</button>
+    <button class="btn snd" data-k="hum" onclick="playSound('hum')">🌀 Deep Focus</button>
+  </div>
+  <label class="text-xs mu block mt-5">Volume<input id="vol" type="range" min="0.03" max="0.5" step="0.01" value="0.2" class="w-full" oninput="setVol(this.value)"></label>
+  <p id="sndNow" class="text-xs mu mt-3">Pick a sound to start. Tap it again to stop.</p>
+</section>
+
+<section class="card p-6 view" data-v="stats">
+  <h2 class="h"><i class="ic">📊</i>Weekly Subject Balance</h2>
+  <div id="an"></div>
+  <p class="text-xs mu mt-1">Last 7 days. Solid bar = tasks completed, faded bar = focus minutes.</p>
+</section>
+
+<section class="card p-6 view" data-v="vault">
+  <h2 class="h"><i class="ic">📚</i>Formula Vault</h2>
+  <div class="grid grid-cols-2 gap-2 mb-3">
+    <input id="vT" class="inp" placeholder="Title (e.g. Area of circle)" maxlength="60">
+    <select id="vS" class="inp" aria-label="Vault subject"></select>
+    <input id="vC" class="inp col-span-2" placeholder="Formula or definition" maxlength="240" onkeydown="if(event.key==='Enter')addVault()">
+    <button class="btn bp col-span-2" onclick="addVault()">Save to vault</button>
+  </div>
+  <div class="grid grid-cols-2 gap-2 mb-3"><input id="vQ" class="inp" placeholder="Search vault…" oninput="renderVault()"><select id="vF" class="inp" onchange="renderVault()" aria-label="Filter vault"></select></div>
+  <div id="vList" class="space-y-2 max-h-96 overflow-auto"></div>
+</section>
+
+<section class="card p-6 view" data-v="themes">
+  <h2 class="h"><i class="ic">🎨</i>Themes</h2>
+  <div class="grid grid-cols-2 gap-3">
+    <button class="sw" data-t="dark" onclick="setTheme('dark')"><div class="h-12 rounded-lg mb-2" style="background:linear-gradient(135deg,#0c0c0e,#8b5cf6)"></div>🖤 Midnight Black</button>
+    <button class="sw" data-t="light" onclick="setTheme('light')"><div class="h-12 rounded-lg mb-2" style="background:linear-gradient(135deg,#f5f7fb,#6366f1)"></div>☀️ Light</button>
+    <button class="sw" data-t="forest" onclick="setTheme('forest')"><div class="h-12 rounded-lg mb-2" style="background:linear-gradient(135deg,#0a1713,#34d399)"></div>🌲 Forest Rain</button>
+    <button class="sw" data-t="sunset" onclick="setTheme('sunset')"><div class="h-12 rounded-lg mb-2" style="background:linear-gradient(135deg,#fb923c,#e11d48)"></div>🌇 Sunset Study</button>
+  </div>
+</section>
+
+</main>
+<p class="text-center text-xs mu mt-6">Study Sprint · free forever · saved on this device</p>
+</div>
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-50 px-4 py-2 rounded-full text-sm font-bold text-white opacity-0 transition-opacity pointer-events-none" style="background:rgba(12,12,14,.92);border:1px solid rgba(255,255,255,.18)"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const S=(k,d)=>{try{const v=localStorage.getItem('ss_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}};
+const W=(k,v)=>{try{localStorage.setItem('ss_'+k,JSON.stringify(v))}catch(e){}};
+const A=v=>Array.isArray(v)?v:[];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SUBJ=['Math','Science','English','Social Studies','Other'];
+const SC={Math:'#8b5cf6',Science:'#10b981',English:'#f59e0b','Social Studies':'#ec4899',Other:'#64748b'};
+const PC={High:'#ef4444',Medium:'#f59e0b',Low:'#10b981'};
+const THEMES=['dark','light','forest','sunset'];
+const SAMPLES=[
+ {q:'Quadratic formula?',a:'x = (−b ± √(b² − 4ac)) / 2a'},
+ {q:'Powerhouse of the cell?',a:'The mitochondria'},
+ {q:'What is a metaphor?',a:'A figure of speech that describes one thing as another, without “like” or “as”.'},
+ {q:'Which atmospheric layer holds our weather?',a:'The troposphere'},
+ {q:'Newton’s second law?',a:'F = m × a (force = mass × acceleration)'}];
+const day=(d=new Date())=>d.toLocaleDateString('en-CA');
+const yest=()=>day(new Date(Date.now()-864e5));
+let tasks=A(S('tasks',[])),cards=A(S('cards',[])),vault=A(S('vault',[])),log=A(S('log',[])),
+    theme=S('theme',null),streak=S('streak',{n:0,last:''}),exam=S('exam','');
+
+/* ---------- helpers ---------- */
+function toast(m){const t=$('toast');t.textContent=m;t.classList.remove('opacity-0');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.add('opacity-0'),2400)}
+function markStudied(){if(streak.last===day())return;streak.n=(streak.last===yest()?streak.n:0)+1;streak.last=day();W('streak',streak);$('stk').textContent=streak.n}
+let ac;function ctx(){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();return ac}catch(e){return null}}
+
+/* ---------- theme ---------- */
+function applyTheme(){const t=THEMES.includes(theme)?theme:'dark';document.documentElement.dataset.theme=t;$('thBtn').textContent=(t==='dark'||t==='forest')?'☀️':'🌙';document.querySelectorAll('.sw').forEach(b=>b.classList.toggle('on',b.dataset.t===t))}
+function setTheme(t){theme=t;W('theme',t);applyTheme()}
+function toggleTheme(){const t=document.documentElement.dataset.theme;setTheme(t==='dark'||t==='forest'?'light':'dark')}
+
+/* ---------- menu ---------- */
+const TABS=[['timer','⏱️','Pomodoro'],['tasks','✅','Tasks'],['cards','🧠','Flashcards'],['notes','📝','Brain Dump'],['sounds','🎧','Soundscapes'],['stats','📊','Analytics'],['vault','📚','Formula Vault'],['themes','🎨','Themes']];
+$('nav').innerHTML=TABS.map(t=>`<button class="tab" data-t="${t[0]}" onclick="showTab('${t[0]}')">${t[1]} ${t[2]}</button>`).join('');
+function showTab(id){
+  W('tab',id);
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.dataset.v===id));
+  document.querySelectorAll('.tab').forEach(b=>{const on=b.dataset.t===id;b.classList.toggle('on',on);b.setAttribute('aria-current',on?'page':'false');if(on){try{b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})}catch(e){}}});
+}
+
+/* ---------- exam ---------- */
+function setExam(v){exam=v||'';W('exam',exam);paintExam()}
+function paintExam(){const e=$('exTxt');if(!exam){e.textContent='Set exam date';return}const t=new Date();t.setHours(0,0,0,0);const d=Math.round((new Date(exam+'T00:00:00')-t)/864e5);e.textContent=d>0?d+' day'+(d>1?'s':'')+' to exam':d===0?'Exam day!':'Exam passed';$('exIn').value=exam}
+
+/* ---------- tasks ---------- */
+function addTask(){const i=$('tIn'),v=i.value.trim();if(!v){i.focus();return}tasks.unshift({id:Date.now(),x:v,s:$('tS').value,p:$('tP').value,d:false});i.value='';W('tasks',tasks);renderTasks()}
+function renderTasks(){
+  const fs=$('fS').value,fp=$('fP').value,po={High:0,Medium:1,Low:2};
+  const l=tasks.filter(t=>(fs==='all'||t.s===fs)&&(fp==='all'||t.p===fp)).sort((a,b)=>(a.d-b.d)||(po[a.p]-po[b.p]));
+  $('tList').innerHTML=l.length?l.map(t=>`<li class="ti flex items-center gap-3 p-3" style="border-left:4px solid ${PC[t.p]}"><input type="checkbox" data-a="tg" data-id="${t.id}" ${t.d?'checked':''} aria-label="Complete task"><div class="flex-1 min-w-0"><div class="break-words ${t.d?'line-through opacity-50':''}">${esc(t.x)}</div><div class="mt-1 flex gap-1 flex-wrap"><span class="c2" style="background:${SC[t.s]}22;color:${SC[t.s]}">${t.s}</span><span class="c2" style="background:${PC[t.p]}22;color:${PC[t.p]}">${t.p}</span></div></div><button class="mu px-1" data-a="del" data-id="${t.id}" aria-label="Delete task">✕</button></li>`).join(''):`<li class="text-sm mu text-center py-4">${tasks.length?'No tasks match these filters.':'No tasks yet. Add your first one above.'}</li>`;
+  const dn=tasks.filter(t=>t.d).length;$('pgTx').textContent=`${dn}/${tasks.length} done`;$('pgBar').style.width=(tasks.length?dn/tasks.length*100:0)+'%';
+}
+$('tList').addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;const id=+b.dataset.id,t=tasks.find(x=>x.id===id);
+  if(b.dataset.a==='del')tasks=tasks.filter(x=>x.id!==id);
+  else if(t){t.d=!t.d;log=log.filter(l=>l.id!==id);if(t.d){log.push({t:Date.now(),s:t.s,k:'t',id});markStudied()}W('log',log)}
+  W('tasks',tasks);renderTasks();renderStats();
+});
+
+/* ---------- pomodoro ---------- */
+let mode='f',total=1500,rem=1500,endAt=0,tick=null;
+function paintT(){const m=String(Math.floor(rem/60)).padStart(2,'0'),s=String(rem%60).padStart(2,'0');$('tm').textContent=m+':'+s;$('ring').style.strokeDashoffset=565.5*(1-rem/total);document.title=tick?m+':'+s+' · Study Sprint':'Study Sprint'}
+function setMode(m){pauseT();mode=m;total=rem=m==='f'?1500:300;$('mf').classList.toggle('bp',m==='f');$('mb').classList.toggle('bp',m==='b');$('tl').textContent=m==='f'?'Stay focused':'Take a breather';paintT()}
+function startT(){
+  if(tick)return;ctx();if(rem<=0)rem=total;endAt=Date.now()+rem*1000;
+  try{if('Notification' in window&&Notification.permission==='default')Notification.requestPermission()}catch(e){}
+  tick=setInterval(()=>{rem=Math.max(0,Math.ceil((endAt-Date.now())/1000));paintT();if(rem<=0)doneT()},250);paintT();
+}
+function pauseT(){clearInterval(tick);tick=null;paintT()}
+function resetT(){pauseT();rem=total;paintT()}
+function beep(){const c=ctx();if(!c)return;[660,880,660].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+i*.35;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.18,t+.05);g.gain.exponentialRampToValueAtTime(.001,t+.32);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.35)})}
+function doneT(){
+  pauseT();beep();toast(mode==='f'?'Focus session complete! Take a break 🎉':'Break over. Back to it!');
+  try{if('Notification' in window&&Notification.permission==='granted')new Notification('Study Sprint',{body:mode==='f'?'Focus session complete!':'Break is over.'})}catch(e){}
+  if(mode==='f'){log.push({t:Date.now(),s:$('tmS').value,k:'f',m:25});W('log',log);markStudied();renderStats()}
+}
+
+/* ---------- flashcards ---------- */
+let idx=0;const deck=()=>SAMPLES.concat(cards);
+function renderCard(){
+  const d=deck();idx=Math.min(idx,d.length-1);const c=d[idx];
+  $('fc').classList.remove('on');$('fF').textContent=c.q;$('fB').textContent=c.a;
+  $('cnt').textContent=(idx+1)+' / '+d.length;$('delC').style.display=idx>=SAMPLES.length?'':'none';
+  $('cap').textContent=cards.length+(cards.length===1?' custom card':' custom cards')+' · unlimited';
+}
+function flipCard(){$('fc').classList.toggle('on');markStudied()}
+function navCard(n){const l=deck().length;idx=(idx+n+l)%l;renderCard()}
+function addCard(){
+  const q=$('cQ').value.trim(),a=$('cA').value.trim();if(!q||!a)return toast('Add both a front and a back');
+  cards.push({id:Date.now(),q,a});W('cards',cards);$('cQ').value=$('cA').value='';idx=deck().length-1;renderCard();toast('Flashcard added')
+}
+function delCard(){if(idx<SAMPLES.length)return;cards.splice(idx-SAMPLES.length,1);W('cards',cards);renderCard()}
+
+/* ---------- soundscapes ---------- */
+let snd=null,nodes=null;
+function stopSound(){if(nodes){nodes.src.forEach(n=>{try{n.stop()}catch(e){}});try{nodes.g.disconnect()}catch(e){}}nodes=null}
+function paintSnd(){document.querySelectorAll('.snd').forEach(b=>b.classList.toggle('bp',b.dataset.k===snd));$('sndNow').textContent=snd?'Now playing: '+({rain:'Rain',white:'White Noise',hum:'Deep Focus Hum'})[snd]:'Pick a sound to start. Tap it again to stop.'}
+function setVol(v){if(nodes)nodes.g.gain.value=+v}
+function playSound(k){
+  const was=snd;stopSound();snd=null;if(was===k)return paintSnd();
+  const c=ctx();if(!c)return toast('Audio isn’t supported in this browser');
+  const g=c.createGain();g.gain.value=+$('vol').value;g.connect(c.destination);const src=[];
+  if(k==='hum'){[[110,.5],[165,.25],[220,.12]].forEach(([f,v])=>{const o=c.createOscillator(),og=c.createGain();o.frequency.value=f;og.gain.value=v;o.connect(og);og.connect(g);o.start();src.push(o)})}
+  else{
+    const b=c.createBuffer(1,c.sampleRate*2,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+    const n=c.createBufferSource();n.buffer=b;n.loop=true;
+    if(k==='rain'){const hp=c.createBiquadFilter(),lp=c.createBiquadFilter();hp.type='highpass';hp.frequency.value=700;lp.type='lowpass';lp.frequency.value=4500;n.connect(hp);hp.connect(lp);lp.connect(g)}else n.connect(g);
+    n.start();src.push(n);
+  }
+  nodes={src,g};snd=k;paintSnd();
+}
+
+/* ---------- analytics ---------- */
+function renderStats(){
+  const from=Date.now()-7*864e5,r=log.filter(l=>l.t>=from);
+  const rows=SUBJ.map(s=>({s,t:r.filter(l=>l.s===s&&l.k==='t').length,m:r.filter(l=>l.s===s&&l.k==='f').reduce((a,l)=>a+l.m,0)}));
+  const mt=Math.max(1,...rows.map(x=>x.t)),mm=Math.max(1,...rows.map(x=>x.m));
+  $('an').innerHTML=rows.map(x=>`<div class="mb-4"><div class="flex justify-between text-xs mb-1.5"><b>${x.s}</b><span class="mu">${x.t} task${x.t===1?'':'s'} · ${x.m} min</span></div><div class="bar mb-1"><i style="width:${x.t/mt*100}%;background:${SC[x.s]}"></i></div><div class="bar" style="height:.4rem"><i style="width:${x.m/mm*100}%;background:${SC[x.s]};opacity:.45"></i></div></div>`).join('');
+}
+
+/* ---------- formula vault ---------- */
+function addVault(){
+  const t=$('vT').value.trim(),c=$('vC').value.trim();if(!t||!c)return toast('Add a title and a formula');
+  vault.unshift({id:Date.now(),t,c,s:$('vS').value});W('vault',vault);$('vT').value=$('vC').value='';renderVault();
+}
+function renderVault(){
+  const q=$('vQ').value.toLowerCase(),f=$('vF').value;
+  const l=vault.filter(v=>(f==='all'||v.s===f)&&(v.t+' '+v.c).toLowerCase().includes(q));
+  $('vList').innerHTML=l.length?l.map(v=>`<div class="ti p-3"><div class="flex justify-between gap-2"><b class="break-words">${esc(v.t)}</b><button class="mu" onclick="delVault(${v.id})" aria-label="Delete entry">✕</button></div><div class="text-sm mt-1 break-words" style="font-family:ui-monospace,monospace">${esc(v.c)}</div><span class="c2 inline-block mt-2" style="background:${SC[v.s]}22;color:${SC[v.s]}">${v.s}</span></div>`).join(''):'<p class="text-sm mu text-center py-3">'+(vault.length?'Nothing matches your search.':'Your vault is empty. Save a formula above.')+'</p>';
+}
+function delVault(id){vault=vault.filter(v=>v.id!==id);W('vault',vault);renderVault()}
+
+/* ---------- init ---------- */
+const opts=a=>a.map(x=>`<option>${x}</option>`).join('');
+['tS','tmS','vS'].forEach(i=>$(i).innerHTML=opts(SUBJ));
+['fS','vF'].forEach(i=>$(i).innerHTML='<option value="all">All subjects</option>'+opts(SUBJ));
+$('fP').innerHTML='<option value="all">All priorities</option>'+opts(['High','Medium','Low']);
+if(streak.last&&streak.last!==day()&&streak.last!==yest()){streak.n=0;W('streak',streak)}
+$('stk').textContent=streak.n;
+$('bd').value=S('notes','');$('bd').oninput=e=>{W('notes',e.target.value);$('sv').textContent='Saved ✓'};
+applyTheme();paintExam();renderTasks();renderStats();renderVault();renderCard();paintT();
+const t0=S('tab','timer');showTab(TABS.some(t=>t[0]===t0)?t0:'timer');
+</script>
+</body>
+</html>
